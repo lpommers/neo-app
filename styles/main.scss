@@ -1,0 +1,113 @@
+// bower:scss
+// endbower
+$h1-font-size: 1.5rem;
+$h2-font-size: 1.2rem;
+$h3-font-size: 1rem;
+
+$base-color: #000000;
+
+* {
+  font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+  box-sizing: border-box;
+  font-weight: 200;
+  line-height: 1.5rem;
+}
+
+/* Space out content a bit */
+body {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+h1 {
+  font-size: $h1-font-size;
+  margin-bottom: 0;
+}
+
+h2 {
+  font-size: $h2-font-size;
+}
+
+h3 {
+  font-size: $h3-font-size;
+}
+
+p {
+  color: lighten( $base-color, 30% );
+}
+
+
+.container{
+  margin-top: 5%;
+  margin-bottom: 5%;
+  margin-left: auto;
+  margin-right: auto;
+
+  padding-top: 15px;
+  background-color: darken( #f8f8f8, 10%);
+  width: 94%;
+  overflow: hidden;
+  border-radius: 5px;
+
+  .review-img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  h1 {
+    text-align: center;
+    width: 95%;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  p {
+    width: 85%;
+    margin-right: auto;
+    margin-left: auto;
+    overflow: hidden;
+    height: 25px;
+  }
+}
+
+.review-footer{
+  h2{
+    float: left;
+    width: 33%;
+    text-align: center;
+  }
+}
+
+
+.hide{
+  display: none;
+}
+
+.show{
+  display: block;
+}
+
+
+/* Responsive: Portrait tablets and up */
+@media screen and (min-width: 768px) {
+  .container {
+    max-width: 730px;
+  }
+
+  /* Remove the padding we set earlier */
+  .header,
+  .marketing,
+  .footer {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  /* Space out the masthead */
+  .header {
+    margin-bottom: 30px;
+  }
+  /* Remove the bottom border on the jumbotron for visual effect */
+  .jumbotron {
+    border-bottom: 0;
+  }
+}
