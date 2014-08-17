@@ -72,31 +72,36 @@ function dateFormat(dateString){
 	return months[date.getMonth()] + " " + date.getDate() + " " + date.getFullYear();
 }
 
+//build html for the average rating image and number of reviews and inserts it into the doc.
+(function buildAverageRating(){
+	var reviewImg = document.createElement('img'),
+			src = "images/" + average(reviews) + "-stars-260x48.png";
+	reviewImg.setAttribute('src', src);
+	reviewImg.setAttribute('class', 'review-img');
+
+	var parent = document.getElementsByClassName('average')[0];
+	var secondChild = parent.childNodes[2];
+	parent.insertBefore(reviewImg, secondChild);
+
+	var small = document.getElementById('average-rating');
+	small.innerText = "(" + reviews.length + " reviews)";
+})();
 
 
 $(function(){
-
-	//add a div which contains an h1 and an iamge of the average rating
-	$('body').append($("<div class='average container'>")
-									.append("<h1>Average Rating:")
-									//adds img of the average review using average function to determine which image to use
-									.append("<img class='review-img' src = 'images/" + average(reviews) + "-stars-260x48.png'></h1>")
-									.append("<small>(From " + reviews.length + " reivews)</small></div>"));
-
-
-
 
 	//here I loop over all the data from the JSON and create an HTML structure for each review that is appended to the body
 	//
 
 
 	//I would have preferred to use something like Angular here with ng-repeat to avoid all this nested HTML in JS. Angular would allow for dynamic native HMTL. But the instructions said no 3rd party JS except JQuery.. so this is what I came up with
+function buildAllReviews (reviews) {
 	$.each(reviews, function(index) {
 
 		$("body")
 			.append(
 					//add container div
-			    $("<div class='container'>")
+			    $("<div class='container review'>")
 			    //star review img
 			    .append("<img class='review-img' src='images/" + reviews[index].starRating + "-stars-260x48.png'>")
 			    //review title
@@ -120,6 +125,9 @@ $(function(){
 			    )
 			);
 	});
+}
+
+buildAllReviews(reviews);
 
 //finds all the paragraphs that are long and will require the show more/less button. Everything over 150 chars are considered long.
 //Use IIFE because this is information we're going to want immediately
@@ -155,5 +163,9 @@ $(function(){
 			$(this).text('Show More...');
 		}
 	});
+
+
+
+
 
 });
