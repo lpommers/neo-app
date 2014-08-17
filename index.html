@@ -6,14 +6,23 @@
 	<link rel="stylesheet" href="styles/main.css">
 </head>
 <body>
+	<!-- where the average rating for all the reviews is help and the sort options -->
 	<div class='average container'>
 		<h1>Average Rating:</h1>
 		<small id='average-rating'></small>
+		<!-- sorting options -->
+		<form id='review-sort'>
+			<h2>Sort By: </h2>
+			<input type="radio" name="sortOptions" id='newest' value='newest'>Newest
+			<input type="radio" name="sortOptions" id='oldest' value='newest'>Oldest
+			<input type="radio" name="sortOptions" id='highest' value='newest' checked>Highest Rated
+			<input type="radio" name="sortOptions" id='lowest' value='newest'>Lowest Rated
+		</form>
+		<!-- logo -->
 		<img src = 'images/trustpilot-logo-light-bg-120x18.png'>
+
 	</div>
-	<div class='sort'>
-		<input type="radio" id='newest'>newest
-	</div>
+
 	<script src = 'scripts/jquery-2.1.1.min.js'></script>
 	<script src = 'scripts/script.js'></script>
 </body>

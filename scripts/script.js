@@ -52,8 +52,49 @@ var reviews = [
     }
 ];
 
+///
+///
+///HELPER FUNCTIONS
+///
+///
 
-//takes the star Rating from each review and averages them
+//sort by newest review
+function sortNewest(a,b){
+	var prev = new Date(a.date);
+	var next = new Date(b.date);
+	return next - prev;
+}
+
+//sort by oldest review
+function sortOldest(a,b){
+	var prev = new Date(a.date);
+	var next = new Date(b.date);
+	return  prev - next;
+}
+
+//sort by highest rated
+function sortHighest(a,b){
+	var prev = Number(a.starRating);
+	var next = Number(b.starRating);
+	return next - prev;
+}
+
+//sort by lowest rated
+function sortLowest(a,b){
+	var prev = Number(a.starRating);
+	var next = Number(b.starRating);
+	return prev - next;
+}
+
+
+//takes date from Javascript and formats it into a string with abbreviated months
+function dateFormat(dateString){
+	var date = new Date(dateString),
+			months = ['Jan', 'Feb', 'Mar', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+	return months[date.getMonth()] + " " + date.getDate() + " " + date.getFullYear();
+}
+
+//takes the starRating from each review adds them and returns an average
 function average(reviews){
 	var ratings = reviews.map(function(each){
 		return each.starRating;
@@ -64,15 +105,7 @@ function average(reviews){
 	return Math.floor(total / ratings.length);
 }
 
-//takes date from Javascript and formats it into a string with abbreviated months
-function dateFormat(dateString){
-	var date = new Date(dateString),
-			months = ['Jan', 'Feb', 'Mar', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
-
-	return months[date.getMonth()] + " " + date.getDate() + " " + date.getFullYear();
-}
-
-//build html for the average rating image and number of reviews and inserts it into the doc.
+//build html with correct average rating image and the number of reviews and inserts it into the DOM in the correct spot. use of IIFE to do this immediately
 (function buildAverageRating(){
 	var reviewImg = document.createElement('img'),
 			src = "images/" + average(reviews) + "-stars-260x48.png";
@@ -87,17 +120,28 @@ function dateFormat(dateString){
 	small.innerText = "(" + reviews.length + " reviews)";
 })();
 
+//finds all the paragraphs that are long and require the show more/less button. Everything over 150 chars is considered long.
+function findLongParas(){
+	var paragraphs = document.getElementsByTagName('p'),
+			charLength = 150;
 
+	[].map.call(paragraphs, function(each){
+		if (each.innerText.length > charLength) {
+		each.nextSibling.className +=
+	' show';
+		}
+	});
+}
+
+//jquery
 $(function(){
-
-	//here I loop over all the data from the JSON and create an HTML structure for each review that is appended to the body
-	//
-
 
 	//I would have preferred to use something like Angular here with ng-repeat to avoid all this nested HTML in JS. Angular would allow for dynamic native HMTL. But the instructions said no 3rd party JS except JQuery.. so this is what I came up with
 function buildAllReviews (reviews) {
+	//removes old reviews from DOM
+	$('.review').remove();
+	//builds new review DOM structure
 	$.each(reviews, function(index) {
-
 		$("body")
 			.append(
 					//add container div
@@ -125,29 +169,20 @@ function buildAllReviews (reviews) {
 			    )
 			);
 	});
+	//add show more/less button to long paragraphs
+	findLongParas();
 }
 
-buildAllReviews(reviews);
 
-//finds all the paragraphs that are long and will require the show more/less button. Everything over 150 chars are considered long.
-//Use IIFE because this is information we're going to want immediately
-(function findLongParas(){
-	var paragraphs = document.getElementsByTagName('p'),
-			charLength = 150;
-
-	[].map.call(paragraphs, function(each){
-		if (each.innerText.length > charLength) {
-		each.nextSibling.className +=
-	' show';
-		}
-	});
-
-})();
-
+///
+///
+///EVENT LISTENERS
+///
+///
 
 	//show more/less action
 	//changes the height of the <p> that contains review body.
-	$('a').click(function(){
+	$('body').on('click', 'a.more-less-button' ,function(){
 		if ($(this).prev().hasClass('show-less')) {
 
 			$(this).prev().css('height', 'auto');
@@ -164,8 +199,42 @@ buildAllReviews(reviews);
 		}
 	});
 
+//finds which radio button is selected and then sort the reviews based on the selected radio
+$('#review-sort input').click(function(){
+	var sortRadio = document.getElementById('review-sort').sortOptions;
+	var checked, sortedReviews;
+	for (var i = 0; i < sortRadio.length; i++){
+		if (sortRadio[i].checked === true) {
+			checked = sortRadio[i].id;
+		}
+	}
+	//sort based on case
+	switch (checked) {
+		case "newest":
+			sortedReviews = reviews.sort(sortNewest);
+			return buildAllReviews(sortedReviews);
+		case "oldest":
+			sortedReviews = reviews.sort(sortOldest);
+			return buildAllReviews(sortedReviews);
+		case "highest":
+			sortedReviews = reviews.sort(sortHighest);
+			return buildAllReviews(sortedReviews);
+		case "lowest":
+			sortedReviews = reviews.sort(sortLowest);
+			return buildAllReviews(sortedReviews);
+	}
+});
 
 
+///
+///
+/// INITIALIZE DEFAULT REVIEWS
+///
+///
 
+buildAllReviews(reviews);
 
 });
+
+
+
