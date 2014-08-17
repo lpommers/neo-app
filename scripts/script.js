@@ -68,10 +68,10 @@ $(function(){
 			        $("<h1>" + reviews[index].reviewTitle + "</h1>"))
 			    //review content
 			    .append(
-			        $("<p>" + reviews[index].reviewBody+ "</p>")
+			        $("<p class= 'less'>" + reviews[index].reviewBody+ "</p>")
 			        )
 			    .append(
-			    	$("<a class='hide less'>show more</a>"))
+			    	$("<a class='hide'>show more</a>"))
 			    //nested div
 			    .append(
 			        $("<div class='review-footer'>")
@@ -99,7 +99,11 @@ $(function(){
 	}
 
 	$('a').click(function(){
+		console.log($(this).prev());
+		if ($(this).prev().hasClass('less')) {
 
+			$(this).prev().css('height', '100px');
+		}
 	});
 
 });
